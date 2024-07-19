@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Додати/Редагувати документ{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} документ</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ formset.management_form }}
+    <table>
+        <thead>
+            <tr>
+                <th>Тип обладнання</th>
+                <th>Обладнання</th>
+                <th>Кількість</th>
+                <th>Ціна</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for form in formset %}
+                <tr>
+                    <td>{{ form.equipment_type }}</td>
+                    <td>
+                        {% if form.equipment_type.value == 'processor' %}
+                            {{ form.processor }}
+                        {% elif form.equipment_type.value == 'motherboard' %}
+                            {{ form.motherboard }}
+                        {% elif form.equipment_type.value == 'ram' %}
+                            {{ form.ram }}
+                        {% elif form.equipment_type.value == 'ssd' %}
+                            {{ form.ssd }}
+                        {% elif form.equipment_type.value == 'hdd' %}
+                            {{ form.hdd }}
+                        {% elif form.equipment_type.value == 'graphics_card' %}
+                            {{ form.graphics_card }}
+                        {% elif form.equipment_type.value == 'psu' %}
+                            {{ form.psu }}
+                        {% elif form.equipment_type.value == 'form_factor' %}
+                            {{ form.form_factor }}
+                        {% endif %}
+                    </td>
+                    <td>{{ form.quantity }}</td>
+                    <td>{{ form.price }}</td>
+                    <td>{{ form.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const equipmentTypeFields = document.querySelectorAll('select[id$="-equipment_type"]');
+        equipmentTypeFields.forEach(function(equipmentTypeField) {
+            equipmentTypeField.addEventListener('change', function() {
+                const equipmentType = this.value;
+                const row = this.closest('tr');
+                const equipmentFields = row.querySelectorAll('select[id$="-processor"], select[id$="-motherboard"], select[id$="-ram"], select[id$="-ssd"], select[id$="-hdd"], select[id$="-graphics_card"], select[id$="-psu"], select[id$="-form_factor"]');
+                equipmentFields.forEach(function(field) {
+                    field.style.display = 'none';
+                });
+                if (equipmentType) {
+                    const fieldToShow = row.querySelector(`select[id$="-${equipmentType}"]`);
+                    if (fieldToShow) {
+                        fieldToShow.style.display = 'inline-block';
+                    }
+                }
+            });
+            equipmentTypeField.dispatchEvent(new Event('change'));
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Список Номенклатур{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="my-4 text-center">Список Номенклатур</h1>
+    <ul class="list-group">
+        {% for nomenclature in nomenclatures %}
+        <li class="list-group-item">{{ nomenclature.name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

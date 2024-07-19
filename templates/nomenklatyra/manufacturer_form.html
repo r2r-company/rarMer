@@ -1,0 +1,14 @@
+<!-- templates/nomenklatyra/manufacturer_form.html -->
+{% extends 'base.html' %}
+
+{% block title %}Додати/Редагувати виробника{% endblock %}
+
+{% block content %}
+    <h1>{% if object %}Редагувати{% else %}Додати{% endif %} виробника</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{% if object %}Оновити{% else %}Додати{% endif %}</button>
+        <a href="{% url 'manufacturer_list' %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+{% endblock %}

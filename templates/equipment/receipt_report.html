@@ -1,0 +1,36 @@
+<!-- templates/equipment/receipt_report.html -->
+{% extends 'base.html' %}
+
+{% block title %}Звіт по приходам{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Звіт по приходам</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Компанія</th>
+                <th>Підрозділ</th>
+                <th>Працівник</th>
+                <th>Дата приходу</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receipt in receipts %}
+            <tr>
+                <td>{{ receipt.item.name }}</td>
+                <td>{{ receipt.company.name }}</td>
+                <td>{% if receipt.department %}{{ receipt.department.name }}{% else %}Немає підрозділу{% endif %}</td>
+                <td>{% if receipt.employee %}{{ receipt.employee.user.username }}{% else %}Без працівника{% endif %}</td>
+                <td>{{ receipt.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Немає приходів</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

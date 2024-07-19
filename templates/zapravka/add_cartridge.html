@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block title %}Додати Картридж{% endblock %}
+
+{% block header %}Додати Картридж{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Додати Картридж</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="cartridgeForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.name|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.number|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.status|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.company|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_department">Підрозділ</label>
+                            <select name="department" id="id_department" class="form-control">
+                                <option value="">---------</option>
+                                {% for department in form.department.field.queryset %}
+                                    <option value="{{ department.id }}">{{ department.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_worker">Працівник</label>
+                            <select name="worker" id="id_worker" class="form-control">
+                                <option value="">---------</option>
+                                {% for worker in form.worker.field.queryset %}
+                                    <option value="{{ worker.id }}">{{ worker.user.first_name }} {{ worker.user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="submit" class="btn btn-primary">Додати</button>
+                            <a href="{% url 'cartridge_list' %}" class="btn btn-secondary">Скасувати</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_company').change(function () {
+            var companyId = $(this).val();
+            $.ajax({
+                url: '{% url "get_departments" %}',
+                data: {
+                    'company_id': companyId
+                },
+                success: function (data) {
+                    var departmentSelect = $('#id_department');
+                    departmentSelect.empty();
+                    departmentSelect.append('<option value="">---------</option>');
+                    $.each(data.departments, function (key, value) {
+                        departmentSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+
+                    var workerSelect = $('#id_worker');
+                    workerSelect.empty();
+                    workerSelect.append('<option value="">---------</option>');
+                    $.each(data.workers, function (key, value) {
+                        workerSelect.append('<option value="' + value.id + '">' + value.user__first_name + ' ' + value.user__last_name + '</option>');
+                    });
+                }
+            });
+        });
+
+        $('#id_department').change(function () {
+            var departmentId = $(this).val();
+            $.ajax({
+                url: '{% url "get_workers" %}',
+                data: {
+                    'department_id': departmentId
+                },
+                success: function (data) {
+                    var workerSelect = $('#id_worker');
+                    workerSelect.empty();
+                    workerSelect.append('<option value="">---------</option>');
+                    $.each(data.workers, function (key, value) {
+                        workerSelect.append('<option value="' + value.id + '">' + value.user__first_name + ' ' + value.user__last_name + '</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

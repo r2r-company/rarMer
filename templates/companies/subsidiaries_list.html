@@ -1,0 +1,32 @@
+<!-- templates/companies/subsidiary_list.html -->
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список підрозділів компанії {{ company.name }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Список підрозділів компанії {{ company.name }}</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Назва підрозділу</th>
+                    <th>Опис</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subsidiary in subsidiaries %}
+                <tr>
+                    <td>{{ subsidiary.name }}</td>
+                    <td>{{ subsidiary.description }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'company_list' %}" class="btn btn-primary">Назад до списку компаній</a>
+    </div>
+</body>
+</html>

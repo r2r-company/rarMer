@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Список користувачів AD{% endblock %}
+
+{% block header %}Список користувачів AD{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Список користувачів Active Directory</h4>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% else %}
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Ім'я користувача</th>
+                                    <th>Ім'я</th>
+                                    <th>Прізвище</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.first_name }}</td>
+                                        <td>{{ user.last_name }}</td>
+                                        <td>{{ user.email }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

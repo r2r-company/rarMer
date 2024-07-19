@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалити доступ{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Видалити доступ</h1>
+        <p>Ви впевнені, що хочете видалити доступ "{{ access.name }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Видалити</button>
+            <a href="{% url 'access_list' %}" class="btn btn-secondary">Скасувати</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Список компаній{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Список компаній</h1>
+        <div class="mb-3">
+            <a href="{% url 'add_company' %}" class="btn btn-primary">Додати компанію</a>
+            <a href="{% url 'add_department' %}" class="btn btn-primary">Додати підрозділ</a>
+        </div>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Назва компанії</th>
+                    <th scope="col">Адреса</th>
+                    <th scope="col">Телефон</th>
+                    <th scope="col">Опис</th>
+                    <th scope="col">Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.address }}</td>
+                    <td>{{ company.phone }}</td>
+                    <td>{{ company.description }}</td>
+                    <td>
+                        <a href="{% url 'subdivisions' company.id %}" class="btn btn-info btn-sm">Підрозділи</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

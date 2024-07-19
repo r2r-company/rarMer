@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Перелік блоків живлення{% endblock %}
+
+{% block content %}
+<h2>Перелік блоків живлення</h2>
+<a class="btn btn-primary mb-3" href="{% url 'psu_create' %}">Додати блок живлення</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>Група</th>
+            <th>Виробник</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for psu in psus %}
+        <tr>
+            <td>{{ psu.name }}</td>
+            <td>{{ psu.group.name }}</td>
+            <td>{{ psu.manufacturer }}</td>
+            <td>
+                <a class="btn btn-secondary" href="{% url 'psu_update' psu.pk %}">Редагувати</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

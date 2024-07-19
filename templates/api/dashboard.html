@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="my-4 text-center">Dashboard</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <select id="companySelect" class="form-control">
+                <option value="">Всі компанії</option>
+                {% for company in companies %}
+                    <option value="{{ company.id }}">{{ company.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="departmentSelect" class="form-control">
+                <option value="">Всі підрозділи</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="userSelect" class="form-control">
+                <option value="">Всі користувачі</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" id="hostname">Імя компютера: </h5>
+                    <p class="card-text" id="ip_address">ІР компютера: </p>
+                    <p class="card-text" id="disk_space">Вільне місце на диску С: </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Hello, Bootstrap modal!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const companySelect = document.getElementById("companySelect");
+        const departmentSelect = document.getElementById("departmentSelect");
+        const userSelect = document.getElementById("userSelect");
+
+        companySelect.addEventListener("change", function() {
+            const companyId = this.value;
+            fetchDepartments(companyId);
+            fetchUsers(companyId, departmentSelect.value);
+        });
+
+        departmentSelect.addEventListener("change", function() {
+            const companyId = companySelect.value;
+            const departmentId = this.value;
+            fetchUsers(companyId, departmentId);
+        });
+
+        userSelect.addEventListener("change", function() {
+            const userId = this.value;
+            fetchLiveData(userId);
+        });
+
+        function fetchDepartments(companyId) {
+            fetch(`/api/departments/?company_id=${companyId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Departments data:", data);  // Отладочный вывод
+                    departmentSelect.innerHTML = '<option value="">Всі підрозділи</option>';
+                    data.forEach(department => {
+                        const option = document.createElement("option");
+                        option.value = department.id;
+                        option.textContent = department.name;
+                        departmentSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching departments:", error));
+        }
+
+        function fetchUsers(companyId, departmentId) {
+            fetch(`/api/users/?company_id=${companyId}&department_id=${departmentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Users data:", data);  // Отладочный вывод
+                    userSelect.innerHTML = '<option value="">Всі користувачі</option>';
+                    data.forEach(user => {
+                        const option = document.createElement("option");
+                        option.value = user.id;
+                        option.textContent = user.username;
+                        userSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching users:", error));
+        }
+
+        function fetchLiveData(userId) {
+            fetch(`/api/live_data/?user_id=${userId}`)
+                .then(response => {
+                    console.log("Response status:", response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Live data:", data);  // Отладочный вывод
+                    document.getElementById('hostname').textContent = `Імя компютера: ${data.hostname || 'N/A'}`;
+                    document.getElementById('ip_address').textContent = `ІР компютера: ${data.ip_address || 'N/A'}`;
+                    document.getElementById('disk_space').textContent = `Вільне місце на диску С: ${data.free_space_c || 'N/A'}%`;
+                })
+                .catch(error => console.error("Error fetching live data:", error));
+        }
+    });
+</script>
+
+{% endblock %}

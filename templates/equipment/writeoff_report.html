@@ -1,0 +1,32 @@
+<!-- templates/equipment/writeoff_report.html -->
+{% extends 'base.html' %}
+
+{% block title %}Звіт по списанням{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Звіт по списанням</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Причина списання</th>
+                <th>Дата списання</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for writeoff in writeoffs %}
+            <tr>
+                <td>{{ writeoff.inventory.item.name }}</td>
+                <td>{{ writeoff.reason }}</td>
+                <td>{{ writeoff.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Немає списань</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

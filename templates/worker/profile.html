@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Мій профіль{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+            <div class="profile-photo">
+                <img src="{% static 'images/default-avatar.png' %}" alt="Фото" class="img-thumbnail rounded-circle">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">Інформація про працівника</h3>
+                    <p class="card-text"><strong>Ім'я:</strong> {{ worker.user.first_name }}</p>
+                    <p class="card-text"><strong>Прізвище:</strong> {{ worker.user.last_name }}</p>
+                    <p class="card-text"><strong>Компанія:</strong> {{ worker.company.name }}</p>
+                    <p class="card-text"><strong>Підрозділ:</strong> {% if worker.department %}{{ worker.department.name }}{% else %}Немає підрозділу{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Список обладнання</h3>
+                    <ul class="list-group">
+                        {% for equipment in equipment_list %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ equipment.item.name }}
+                            <span>
+                                <a href="{% url 'equipment_documents' equipment.id %}" class="btn btn-info btn-sm">Всі документи</a>
+                                <a href="{% url 'assign_task' equipment.id %}" class="btn btn-primary btn-sm">Поставити задачу</a>
+                            </span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">Немає обладнання</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block css %}
+<style>
+    .profile-photo {
+        margin-bottom: 20px;
+    }
+    .profile-photo img {
+        width: 150px;
+        height: 150px;
+    }
+    .card {
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}

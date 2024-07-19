@@ -1,0 +1,30 @@
+<!-- templates/nomenklatyra/drivetype_list.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Типи накопичувачів{% endblock %}
+
+{% block content %}
+<h2>Типи накопичувачів</h2>
+<a href="{% url 'drivetype_create' %}" class="btn btn-primary">Додати тип накопичувача</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Тип накопичувача</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for drivetype in drivetypes %}
+        <tr>
+            <td>{{ drivetype.id }}</td>
+            <td>{{ drivetype.name }}</td>
+            <td>
+                <a href="{% url 'drivetype_update' drivetype.id %}" class="btn btn-secondary">Редагувати</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

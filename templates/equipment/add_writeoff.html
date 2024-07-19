@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block title %}Додати Списання{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="my-4">Додати Списання</h1>
+        <div class="card p-4 shadow-sm">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_inventory">Запас:</label>
+                    {{ form.inventory|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="id_reason">Причина списання:</label>
+                    {{ form.reason|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="id_task">На основі задачі:</label>
+                    <select name="task" class="form-control" id="id_task">
+                        <option value="" selected>---------</option>
+                        {% for task in form.fields.task.queryset %}
+                            <option value="{{ task.id }}">{{ task.name }} ({{ task.task_number }}) - {{ task.created_by.username }} для {{ task.assigned_to.username }} до {{ task.due_date }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Зберегти</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

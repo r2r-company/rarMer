@@ -1,0 +1,12 @@
+<!-- templates/nomenklatyra/formfactorhdd_form.html -->
+{% extends 'base.html' %}
+{% block title %}Додати/Редагувати Форм-фактор HDD{% endblock %}
+{% block content %}
+<h1>{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} Форм-фактор HDD</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a href="{% url 'formfactorhdd_list' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

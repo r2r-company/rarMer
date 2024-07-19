@@ -1,0 +1,45 @@
+<!-- templates/nomenklatyra/psupurpose_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Список призначень блоків живлення{% endblock %}
+
+{% block header %}Список призначень блоків живлення{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Список призначень блоків живлення</h4>
+                    <a href="{% url 'psupurpose_create' %}" class="btn btn-primary float-right">Додати призначення</a>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Назва</th>
+                                <th>Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for purpose in psupurposes %}
+                            <tr>
+                                <td>{{ purpose.name }}</td>
+                                <td>
+                                    <a href="{% url 'psupurpose_update' purpose.pk %}" class="btn btn-sm btn-warning">Редагувати</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2">Призначення блоків живлення не знайдені.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

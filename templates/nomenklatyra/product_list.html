@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Перелік продуктів{% endblock %}
+
+{% block content %}
+<h2>Перелік продуктів</h2>
+<a class="btn btn-primary mb-3" href="{% url 'product_create' %}">Додати продукт</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>Група</th>
+            <th>Виробник</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.group.name }}</td>
+            <td>{{ product.manufacturer }}</td>
+            <td>
+                <a class="btn btn-secondary" href="{% url 'product_update' product.pk %}">Редагувати</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,51 @@
+<!-- templates/nomenklatyra/ssd_form.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Додати SSD{% endblock %}
+
+{% block header %}Додати SSD{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Додати SSD</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.name|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.group|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.manufacturer|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.drive_type|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.capacity|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.form_factor|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.interface|as_crispy_field }}
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="submit" class="btn btn-primary">Додати</button>
+                            <a href="{% url 'ssd_list' %}" class="btn btn-secondary">Скасувати</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

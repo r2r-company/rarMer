@@ -1,0 +1,27 @@
+<!-- templates/nomenklatyra/hddinterface_list.html -->
+{% extends 'base.html' %}
+{% block title %}Інтерфейси підключення HDD{% endblock %}
+{% block content %}
+<h1>Інтерфейси підключення HDD</h1>
+<a href="{% url 'hddinterface_create' %}" class="btn btn-primary">Додати новий інтерфейс підключення HDD</a>
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for interface in interfaces %}
+        <tr>
+            <td>{{ interface.id }}</td>
+            <td>{{ interface.name }}</td>
+            <td>
+                <a href="{% url 'hddinterface_update' interface.id %}" class="btn btn-warning">Редагувати</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

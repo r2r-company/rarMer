@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} групу номенклатури{% endblock %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} групу номенклатури</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Оновити{% else %}Додати{% endif %}</button>
+    <a class="btn btn-secondary" href="{% url 'groupnomenklatyra_list' %}">Скасувати</a>
+</form>
+{% endblock %}

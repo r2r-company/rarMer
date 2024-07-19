@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Список працівників{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Список працівників</h1>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ім'я</th>
+                    <th scope="col">Компанія</th>
+                    <th scope="col">Підрозділ</th>
+                    <th scope="col">Позиція</th>
+                    <th scope="col">Дата прийому на роботу</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for worker in workers %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ worker.user.username }}</td>
+                    <td>{{ worker.company.name }}</td>
+                    <td>
+                        {% if worker.department %}
+                            {{ worker.department.name }}
+                        {% else %}
+                            Немає підрозділу
+                        {% endif %}
+                    </td>
+                    <td>{{ worker.position }}</td>
+                    <td>{{ worker.hire_date }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">Немає доступних працівників</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

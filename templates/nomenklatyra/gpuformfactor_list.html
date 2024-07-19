@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Форм-фактори відеокарт{% endblock %}
+
+{% block header %}Форм-фактори відеокарт{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>Список форм-факторів відеокарт</h2>
+            <a href="{% url 'gpu_formfactor_create' %}" class="btn btn-primary mb-3">Додати форм-фактор відеокарти</a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Назва</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for formfactor in gpu_formfactors %}
+                        <tr>
+                            <td>{{ formfactor.name }}</td>
+                            <td>
+                                <a href="{% url 'gpu_formfactor_update' formfactor.pk %}" class="btn btn-sm btn-warning">Редагувати</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

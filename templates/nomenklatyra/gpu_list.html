@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Перелік відеокарт{% endblock %}
+
+{% block content %}
+<h2>Перелік відеокарт</h2>
+<a class="btn btn-primary mb-3" href="{% url 'gpu_create' %}">Додати відеокарту</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>Група</th>
+            <th>Виробник</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for gpu in gpus %}
+        <tr>
+            <td>{{ gpu.name }}</td>
+            <td>{{ gpu.group.name }}</td>
+            <td>{{ gpu.manufacturer }}</td>
+            <td>
+                <a class="btn btn-secondary" href="{% url 'gpu_update' gpu.pk %}">Редагувати</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

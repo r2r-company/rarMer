@@ -1,0 +1,51 @@
+<!-- profile.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ userprofile.user.username }}'s Profile</h1>
+    <p>Email: {{ userprofile.user.email }}</p>
+    <p>Phone: {{ userprofile.phone }}</p>
+    <p>Company: {{ userprofile.company }}</p>
+    <p>Department: {{ userprofile.department }}</p>
+    {% if userprofile.photo %}
+        <img src="{{ userprofile.photo.url }}" alt="Profile Photo">
+    {% else %}
+        <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar">
+    {% endif %}
+
+    <h2>Accesses</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IP</th>
+                <th>GW</th>
+                <th>Mask</th>
+                <th>DNS</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>IPsec</th>
+                <th>Site</th>
+                <th>Additional Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for access in accesses %}
+                <tr>
+                    <td>{{ access.name }}</td>
+                    <td>{{ access.ip }}</td>
+                    <td>{{ access.gw }}</td>
+                    <td>{{ access.mask }}</td>
+                    <td>{{ access.dns }}</td>
+                    <td>{{ access.login }}</td>
+                    <td>{{ access.password }}</td>
+                    <td>{{ access.ipsec }}</td>
+                    <td>{{ access.site }}</td>
+                    <td>{{ access.additional_info }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

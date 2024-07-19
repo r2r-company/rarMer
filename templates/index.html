@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Головна сторінка{% endblock %}
+
+{% block header %}Головна сторінка{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Завдання</h5>
+                <p class="card-text">Перейдіть в менеджер завдань, щоб керувати своїми завданнями</p>
+                <a href="{% url 'task_list' %}" class="btn btn-primary">Менеджер завдань</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Доступи</h5>
+                <p class="card-text">Перейдіть в Мої доступи, щоб керувати своїми доступами</p>
+                <a href="{% url 'my_profile' %}" class="btn btn-primary">Мої доступи</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Мій профіль</h5>
+                <p class="card-text">Основна інформація про Користувача</p>
+                <a href="{% url 'profile' %}" class="btn btn-primary">Мій профіль</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

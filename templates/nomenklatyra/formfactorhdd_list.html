@@ -1,0 +1,27 @@
+<!-- templates/nomenklatyra/formfactorhdd_list.html -->
+{% extends 'base.html' %}
+{% block title %}Форм-фактори HDD{% endblock %}
+{% block content %}
+<h1>Форм-фактори HDD</h1>
+<a href="{% url 'formfactorhdd_create' %}" class="btn btn-primary">Додати новий форм-фактор HDD</a>
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for formfactor in formfactors %}
+        <tr>
+            <td>{{ formfactor.id }}</td>
+            <td>{{ formfactor.name }}</td>
+            <td>
+                <a href="{% url 'formfactorhdd_update' formfactor.id %}" class="btn btn-warning">Редагувати</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

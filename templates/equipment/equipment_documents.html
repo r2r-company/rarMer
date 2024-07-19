@@ -1,0 +1,87 @@
+<!-- templates/equipment/equipment_documents.html -->
+{% extends 'base.html' %}
+
+{% block title %}Документи для {{ equipment.item.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Документи для {{ equipment.item.name }}</h1>
+    <h2>Приходи</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Компанія</th>
+                <th>Підрозділ</th>
+                <th>Працівник</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receipt in receipts %}
+            <tr>
+                <td>{{ receipt.id }}</td>
+                <td>{{ receipt.company.name }}</td>
+                <td>{{ receipt.get_department_name }}</td>
+                <td>{{ receipt.get_employee_username }}</td>
+                <td>{{ receipt.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Немає приходів</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Переміщення</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Новий підрозділ</th>
+                <th>Новий працівник</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transfer in transfers %}
+            <tr>
+                <td>{{ transfer.id }}</td>
+                <td>{{ transfer.get_to_department_name }}</td>
+                <td>{{ transfer.get_to_employee_username }}</td>
+                <td>{{ transfer.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Немає переміщень</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Списання</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Причина</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for writeoff in writeoffs %}
+            <tr>
+                <td>{{ writeoff.id }}</td>
+                <td>{{ writeoff.reason }}</td>
+                <td>{{ writeoff.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Немає списань</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

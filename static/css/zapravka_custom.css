@@ -1,0 +1,35 @@
+body {
+
+}
+.department-block {
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.cartridge {
+    background-color: #f5f0dd;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+.cartridge.porozhniy {
+    background-color: #f8d7da;
+}
+.cartridge:hover {
+    transform: scale(1.05);
+}
+.change-status {
+    margin-top: 10px;
+}
+.modal-content {
+    border-radius: 10px;
+}
+.btn-primary, .btn-secondary {
+    border-radius: 20px;
+}

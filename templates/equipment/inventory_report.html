@@ -1,0 +1,36 @@
+<!-- templates/equipment/inventory_report.html -->
+{% extends 'base.html' %}
+
+{% block title %}Звіт по запасам{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Звіт по запасам</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Компанія</th>
+                <th>Підрозділ</th>
+                <th>Працівник</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventory in inventory_items %}
+            <tr class="{% if inventory.status == 'Списаний товар' %}table-danger{% endif %}">
+                <td>{{ inventory.item.name }}</td>
+                <td>{{ inventory.company.name }}</td>
+                <td>{% if inventory.department %}{{ inventory.department.name }}{% else %}Немає підрозділу{% endif %}</td>
+                <td>{% if inventory.employee %}{{ inventory.employee.user.username }}{% else %}Без працівника{% endif %}</td>
+                <td>{{ inventory.status }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Немає запасів</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

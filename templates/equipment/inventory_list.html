@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Список запасів товару{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Список запасів товару</h1>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Номенклатура</th>
+                    <th scope="col">Компанія</th>
+                    <th scope="col">Підрозділ</th>
+                    <th scope="col">Працівник</th>
+                    <th scope="col">Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventory in inventory_items %}
+                <tr {% if inventory.status == "Списаний товар" %}style="background-color: #f8d7da;"{% endif %}>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ inventory.item.name }}</td>
+                    <td>{{ inventory.company.name }}</td>
+                    <td>{% if inventory.department %}{{ inventory.department.name }}{% else %}Без підрозділу{% endif %}</td>
+                    <td>{% if inventory.employee %}{{ inventory.employee.user.username }}{% else %}No employee{% endif %}</td>
+                    <td>{{ inventory.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

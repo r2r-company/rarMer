@@ -1,0 +1,15 @@
+<!-- templates/nomenklatyra/drivetype_form.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Додати/Редагувати Тип Накопичувача{% endblock %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} Тип Накопичувача</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Зберегти{% else %}Додати{% endif %}</button>
+    <a href="{% url 'drivetype_list' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

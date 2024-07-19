@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Task Detail{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+    <a href="{% url 'my_tasks' %}" class="btn btn-secondary mb-3">
+            <i class="fa-solid fa-arrow-left"></i> Назад
+        </a>
+        <h1 class="my-4">{{ task.title }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Опис</h5>
+                <p class="card-text">{{ task.description }}</p>
+                <h5 class="card-title">Назва</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Status:</strong> {{ task.get_status_display }}</li>
+                    <li class="list-group-item"><strong>Deadline:</strong> {{ task.deadline }}</li>
+                    <li class="list-group-item"><strong>Assigned to:</strong> {{ task.assigned_to.username }}</li>
+                    <li class="list-group-item"><strong>Priority:</strong> {{ task.get_priority_display }}</li>
+                </ul>
+            </div>
+        </div>
+        <h2 class="my-4">Коментар</h2>
+        <ul class="list-group">
+            {% for comment in comments %}
+            <li class="list-group-item">
+                <strong>{{ comment.user.username }}</strong>: {{ comment.comment_text }}
+                <span class="text-muted float-right">{{ comment.created_at }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'add_comment' task.id %}" class="btn btn-secondary mt-3">Додати коментар</a>
+    </div>
+</div>
+{% endblock %}

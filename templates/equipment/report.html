@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Звіт{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Звіт</h1>
+        <form method="get" class="form-inline mb-4">
+            {{ filter_form.as_p }}
+            <button type="submit" class="btn btn-primary">Фільтрувати</button>
+        </form>
+        <h2>Приходи</h2>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Товар</th>
+                    <th>Компанія</th>
+                    <th>Підрозділ</th>
+                    <th>Працівник</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for receipt in receipts %}
+                <tr>
+                    <td>{{ receipt.id }}</td>
+                    <td>{{ receipt.item.name }}</td>
+                    <td>{{ receipt.company.name }}</td>
+                    <td>{{ receipt.get_department_name }}</td>
+                    <td>{{ receipt.get_employee_username }}</td>
+                    <td>{{ receipt.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Переміщення</h2>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Товар</th>
+                    <th>З компанії</th>
+                    <th>З підрозділу</th>
+                    <th>До підрозділу</th>
+                    <th>До працівника</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transfer in transfers %}
+                <tr>
+                    <td>{{ transfer.id }}</td>
+                    <td>{{ transfer.inventory.item.name }}</td>
+                    <td>{{ transfer.inventory.company.name }}</td>
+                    <td>{{ transfer.inventory.get_department_name }}</td>
+                    <td>{{ transfer.get_to_department_name }}</td>
+                    <td>{{ transfer.get_to_employee_username }}</td>
+                    <td>{{ transfer.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Списання</h2>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Товар</th>
+                    <th>Компанія</th>
+                    <th>Підрозділ</th>
+                    <th>Працівник</th>
+                    <th>Причина</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for writeoff in writeoffs %}
+                <tr>
+                    <td>{{ writeoff.id }}</td>
+                    <td>{{ writeoff.inventory.item.name }}</td>
+                    <td>{{ writeoff.inventory.company.name }}</td>
+                    <td>{{ writeoff.get_department_name }}</td>
+                    <td>{{ writeoff.get_employee_username }}</td>
+                    <td>{{ writeoff.reason }}</td>
+                    <td>{{ writeoff.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Запаси</h2>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Товар</th>
+                    <th>Компанія</th>
+                    <th>Підрозділ</th>
+                    <th>Працівник</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventory in inventories %}
+                <tr class="{% if inventory.status == 'Списаний товар' %}table-danger{% endif %}">
+                    <td>{{ inventory.id }}</td>
+                    <td>{{ inventory.item.name }}</td>
+                    <td>{{ inventory.company.name }}</td>
+                    <td>{{ inventory.get_department_name }}</td>
+                    <td>{{ inventory.get_employee_username }}</td>
+                    <td>{{ inventory.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

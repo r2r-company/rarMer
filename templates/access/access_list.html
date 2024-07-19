@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Список доступів{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Список доступів</h1>
+        <div class="mb-3">
+            <a href="{% url 'access_add' %}" class="btn btn-primary">Додати доступ</a>
+        </div>
+        <div class="mb-3">
+            <form method="get" id="filterForm">
+                <div class="form-row">
+                    <div class="col">
+                        <select name="company" class="form-control" id="companySelect" onchange="document.getElementById('filterForm').submit();">
+                            <option value="">Всі компанії</option>
+                            {% for company in companies %}
+                            <option value="{{ company.id }}" {% if company.id == selected_company %}selected{% endif %}>{{ company.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select name="department" class="form-control" id="departmentSelect" onchange="document.getElementById('filterForm').submit();">
+                            <option value="">Всі підрозділи</option>
+                            {% for department in departments %}
+                            <option value="{{ department.id }}" {% if department.id == selected_department %}selected{% endif %}>{{ department.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select name="user" class="form-control" id="userSelect" onchange="document.getElementById('filterForm').submit();">
+                            <option value="">Всі користувачі</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}" {% if user.id == selected_user %}selected{% endif %}>{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Назва</th>
+                    <th scope="col">IP</th>
+                    <th scope="col">Логін</th>
+                    <th scope="col">Пароль</th>
+                    <th scope="col">Сайт</th>
+                    <th scope="col">Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for access in accesses %}
+                <tr>
+                    <th scope="row">{{ access.id }}</th>
+                    <td>{{ access.name }}</td>
+                    <td>{{ access.ip }}</td>
+                    <td>{{ access.login }}</td>
+                    <td>{{ access.password }}</td>
+                    <td>{{ access.site }}</td>
+                    <td>
+                        <a href="{% url 'access_edit' access.id %}" class="btn btn-info btn-sm">Редагувати</a>
+                        <a href="{% url 'access_delete' access.id %}" class="btn btn-danger btn-sm">Видалити</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

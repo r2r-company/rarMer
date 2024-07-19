@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block title %}Мої завдання{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+    <a href="{% url 'task_list' %}" class="btn btn-secondary mb-3">
+            <i class="fa-solid fa-arrow-left"></i> Назад
+        </a>
+        <h1 class="display-4">Мої завдання</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Нові завдання</h3>
+                <ul class="list-group">
+                    {% for task in new_tasks %}
+                        <li class="list-group-item">
+                            <h5>{{ task.name }}</h5>
+                            <p>{{ task.description }}</p>
+                            <p>Номер завдання: {{ task.task_number }}</p>
+                            {% if task.equipment %}
+                            <p>Обладнання: {{ task.equipment.item.name }}</p>
+                            {% endif %}
+                            <p class="card-text"><small class="text-muted">Поставив: {{ task.created_by.username }}</small></p>
+                            <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Переглянути</a>
+                            <form method="post" action="{% url 'task_update_status' task.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="В процесі">
+                                <button type="submit" class="btn btn-success btn-sm">Взяти в роботу</button>
+                            </form>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">Немає нових завдань</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h3>Завдання в роботі</h3>
+                <ul class="list-group">
+                    {% for task in in_progress_tasks %}
+                        <li class="list-group-item">
+                            <h5>{{ task.name }}</h5>
+                            <p>{{ task.description }}</p>
+                            <p>Номер завдання: {{ task.task_number }}</p>
+                            {% if task.equipment %}
+                            <p>Обладнання: {{ task.equipment.item.name }}</p>
+                            {% endif %}
+                            <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Переглянути</a>
+                            <form method="post" action="{% url 'task_update_status' task.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="Завершено">
+                                <button type="submit" class="btn btn-primary btn-sm">Виконано</button>
+                            </form>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">Немає завдань в роботі</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h3>Виконані завдання</h3>
+                <ul class="list-group">
+                    {% for task in completed_tasks %}
+                        <li class="list-group-item">
+                            <h5>{{ task.name }}</h5>
+                            <p>{{ task.description }}</p>
+                            <p>Номер завдання: {{ task.task_number }}</p>
+                            {% if task.equipment %}
+                            <p>Обладнання: {{ task.equipment.item.name }}</p>
+                            {% endif %}
+                            <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Переглянути</a>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">Немає виконаних завдань</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

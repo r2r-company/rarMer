@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Список приходів товару{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="my-4">Список приходів товару</h1>
+        <div class="mb-3">
+            <a href="{% url 'add_equipment_receipt' %}" class="btn btn-primary">Додати прихід</a>
+        </div>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Номенклатура</th>
+                    <th scope="col">ІД Номенклатури</th>
+                    <th scope="col">Компанія</th>
+                    <th scope="col">Підрозділ</th>
+                    <th scope="col">Працівник</th>
+                    <th scope="col">Дата приходу</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for receipt in receipt_items %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ receipt.item.name }}</td>
+                    <td>{{ receipt.item.id }}</td>
+                    <td>{{ receipt.company.name }}</td>
+                    <td>{% if receipt.department %}{{ receipt.department.name }}{% else %}Без підрозділу{% endif %}</td>
+                    <td>{% if receipt.employee %}{{ receipt.employee.user.username }}{% else %}No employee{% endif %}</td>
+                    <td>{{ receipt.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
