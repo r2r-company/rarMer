@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'workers',
     "zvit",
     "zapravka",
+    'simplebot',
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -146,8 +147,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-AUTH_LDAP_SERVER_URI = "ldap://srvADrb.rb.local"
+AUTH_LDAP_SERVER_URI = "ldap://LinuxAD.rb.local"
 AUTH_LDAP_BIND_DN = "CN=Администратор,CN=Users,DC=rb,DC=local"  # Змініть на вашого bind користувача
 AUTH_LDAP_BIND_PASSWORD = "ITpkm#$#$#$!!!!"  # Пароль для bind користувача
 AUTH_LDAP_SEARCH_BASE = "DC=rb,DC=local"
-AUTH_LDAP_DOMAIN = "rb"  # Домен вашої компанії
+AUTH_LDAP_DOMAIN = "rb"  

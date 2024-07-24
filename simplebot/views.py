@@ -1,29 +1,32 @@
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import CallbackContext, CommandHandler, CallbackQueryHandler, Dispatcher
-import json
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
-TOKEN = '7451278791:AAG7UXvPEJeMJENhhasiaxYnv8oaS8mPCRo'
+# Змінні для Telegram бота
+TOKEN = '6773354730:AAE8jlpfanpabHzqyot0iFWYY_7BTrhBOT8'
 
-@csrf_exempt
-def webhook(request):
-    if request.method == 'POST':
-        update = Update.de_json(json.loads(request.body), None)
-        dispatcher.process_update(update)
-        return JsonResponse({"status": "ok"})
-    return JsonResponse({"error": "Invalid request method"}, status=405)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-def start(update: Update, context: CallbackContext):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [[InlineKeyboardButton("Say Hi", callback_data='hi')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Welcome! Click the button below:', reply_markup=reply_markup)
+    await update.message.reply_text('Welcome! Click the button below:', reply_markup=reply_markup)
 
-def button(update: Update, context: CallbackContext):
+async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
+    await query.answer()
     if query.data == 'hi':
-        query.edit_message_text(text="Привіт!")
+        await query.edit_message_text(text="Привіт!")
 
-dispatcher = Dispatcher(None, None, use_context=True)
-dispatcher.add_handler(CommandHandler("start", start))
-dispatcher.add_handler(CallbackQueryHandler(button))
+def main():
+    application = Application.builder().token(TOKEN).build()
+
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CallbackQueryHandler(button))
+
+    logger.info("Starting bot")
+    application.run_polling()
+
+if __name__ == '__main__':
+    main()

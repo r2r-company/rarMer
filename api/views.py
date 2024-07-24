@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
 from .models import ComputerInfo, ChangeLog
+from zapravka.models import Cartridge
+
 
 def dashboard(request):
     companies = Company.objects.all()
@@ -95,3 +97,11 @@ def notify(request):
         return JsonResponse({"error": "User not found"}, status=404)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+
+
+
+def cartridge_list_api(request):
+    cartridges = Cartridge.objects.all()
+    data = [{'id': cartridge.id, 'name': cartridge.name, 'number': cartridge.number, 'status': cartridge.status} for cartridge in cartridges]
+    return JsonResponse(data, safe=False)

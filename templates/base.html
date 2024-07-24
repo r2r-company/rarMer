@@ -32,12 +32,7 @@
 {#                    </li>#}
 
 
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'ad_users' %}">#}
-{#                            <i class="fas fa-tachometer-alt"></i>#}
-{#                            Мій профіль#}
-{#                        </a>#}
-{#                    </li>#}
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'profile' %}">
                             <i class="fas fa-tachometer-alt"></i>
@@ -273,6 +268,13 @@
                         <a class="nav-link" href="{% url 'access_list' %}">
                             <i class="fas fa-key"></i>
                             Доступи
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ad_users' %}">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Користувачі AD
                         </a>
                     </li>
 

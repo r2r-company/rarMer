@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}Доступ заборонений{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h3>403 - Доступ заборонений</h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Вибачте, у вас немає доступу до цієї сторінки.</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary">Повернутися на головну</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
