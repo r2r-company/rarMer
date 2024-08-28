@@ -4,20 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Access
 from .forms import AccessForm
-from django.core.exceptions import PermissionDenied
 
 
-
-
-def admin_only(function):
-    def wrap(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_superuser:
-            return function(request, *args, **kwargs)
-        else:
-            return render(request, '403.html', status=403)
-    return wrap
-
-@admin_only
 def access_list(request):
     company_id = request.GET.get('company')
     department_id = request.GET.get('department')

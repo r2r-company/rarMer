@@ -3,21 +3,10 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from workers.models import Worker
-from django.shortcuts import render
-from django.core.exceptions import PermissionDenied
-
 
 from .models import EquipmentInventory, EquipmentReceipt, EquipmentTransfer, EquipmentWriteOff
 from .forms import EquipmentInventoryForm, EquipmentReceiptForm, EquipmentTransferForm, EquipmentWriteOffForm, \
     ReportFilterForm
-
-def admin_only(function):
-    def wrap(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_superuser:
-            return function(request, *args, **kwargs)
-        else:
-            return render(request, '403.html', status=403)
-    return wrap
 
 
 def equipment_inventory_list(request):
@@ -38,7 +27,6 @@ def equipment_receipt_list(request):
     receipt_items = EquipmentReceipt.objects.all()
     return render(request, 'equipment/receipt_list.html', {'receipt_items': receipt_items})
 
-@admin_only
 def add_equipment_receipt(request):
     if request.method == 'POST':
         form = EquipmentReceiptForm(request.POST)
@@ -53,7 +41,6 @@ def equipment_transfer_list(request):
     transfer_items = EquipmentTransfer.objects.all()
     return render(request, 'equipment/transfer_list.html', {'transfer_items': transfer_items})
 
-@admin_only
 def add_equipment_transfer(request):
     if request.method == 'POST':
         form = EquipmentTransferForm(request.POST)
@@ -68,7 +55,6 @@ def equipment_writeoff_list(request):
     writeoff_items = EquipmentWriteOff.objects.all()
     return render(request, 'equipment/writeoff_list.html', {'writeoff_items': writeoff_items})
 
-@admin_only
 def add_equipment_writeoff(request):
     if request.method == 'POST':
         form = EquipmentWriteOffForm(request.POST)

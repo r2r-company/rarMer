@@ -75,24 +75,3 @@ def get_workers(request):
     return JsonResponse({
         'workers': list(workers.values('id', 'user__first_name', 'user__last_name'))
     })
-
-
-@csrf_exempt
-def change_status_from_telegram(request, cartridge_id):
-    try:
-        cartridge = Cartridge.objects.get(id=cartridge_id)
-        cartridge.status = 'Заправлений'
-        cartridge.save()
-        return JsonResponse({'success': True})
-    except Cartridge.DoesNotExist:
-        return JsonResponse({'success': False, 'error': 'Картридж не знайдено'})
-
-
-def list_cartridges(request):
-    cartridges = Cartridge.objects.filter(status='Порожній')
-    if not cartridges.exists():
-        return JsonResponse({'message': 'Всі картриджі заправлені'})
-
-    data = [{'id': cartridge.id, 'name': cartridge.name, 'number': cartridge.number, 'status': cartridge.status} for
-            cartridge in cartridges]
-    return JsonResponse(data, safe=False)

@@ -9,17 +9,6 @@ from workers.form import WorkerForm
 from django import forms
 
 from .models import Worker
-from django.shortcuts import render
-from django.core.exceptions import PermissionDenied
-
-
-def admin_only(function):
-    def wrap(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_superuser:
-            return function(request, *args, **kwargs)
-        else:
-            return render(request, '403.html', status=403)
-    return wrap
 
 def worker_list(request):
     workers = Worker.objects.all()
@@ -43,7 +32,7 @@ def profile_view(request):
         return render(request, 'worker/profile.html', context)
     except Worker.DoesNotExist:
         return redirect('create_profile')  # Замість 'create_profile' вкажіть вашу URL назву для створення профілю
-@admin_only
+
 def get_ad_users(request):
     try:
         server = ldap3.Server(settings.AUTH_LDAP_SERVER_URI)
