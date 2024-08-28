@@ -3,78 +3,187 @@
 {% block title %}Список завдань{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="my-4">Список завдань</h1>
-        <div class="mb-3">
-            <a href="{% url 'add_task' %}" class="btn btn-success">Додати завдання</a>
-            <a href="{% url 'my_tasks' %}" class="btn btn-danger">Мої завдання</a>
-        </div>
-        <h2>Задачі, які я поставив</h2>
-        <table class="table table-hover">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Назва</th>
-                    <th scope="col">Опис</th>
-                    <th scope="col">Статус</th>
-                    <th scope="col">Дата виконання</th>
-                    <th scope="col">Виконавець</th>
-                    <th scope="col">Пріоритет</th>
-                    <th scope="col">Дії</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for task in tasks_created_by_user %}
-                <tr>
-                    <th scope="row">{{ task.id }}</th>
-                    <td>{{ task.name }}</td>
-                    <td>{{ task.description|truncatewords:10 }}</td>
-                    <td>{{ task.get_status_display }}</td>
-                    <td>{{ task.due_date }}</td>
-                    <td>{{ task.assigned_to.username }}</td>
-                    <td>{{ task.get_priority_display }}</td>
-                    <td>
-                        <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Переглянути</a>
-                        <a href="{% url 'add_comment' task.id %}" class="btn btn-secondary btn-sm">Додати коментар</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .task-board {
+        margin: 20px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .tabs {
+        display: flex;
+        border-bottom: 2px solid #e0e0e0;
+        margin-bottom: 20px;
+    }
+    .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px 4px 0 0;
+        border: 1px solid #e0e0e0;
+        border-bottom: none;
+        background-color: #f7f7f7;
+        margin-right: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+    .tab.active {
+        background-color: #ffffff;
+        color: #007bff;
+    }
+    .task-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .task-table th, .task-table td {
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        text-align: left;
+    }
+    .task-table th {
+        background-color: #f7f7f7;
+        color: #333;
+        font-weight: bold;
+    }
+    .task-table td {
+        background-color: #ffffff;
+        transition: background-color 0.3s; /* Додаємо плавний перехід */
+    }
+    .task-table tr:hover td {
+        background-color: #f1f1f1; /* Колір підсвічування при наведенні */
+    }
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-weight: bold;
+        color: #ffffff;
+        display: inline-block;
+    }
+    .status-new { background-color: #ffc107; }
+    .status-in-progress { background-color: #007bff; }
+    .status-completed { background-color: #28a745; }
+    .priority-high { color: #dc3545; }
+    .priority-medium { color: #ffc107; }
+    .priority-low { color: #28a745; }
+    .filter-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+</style>
 
-        <h2>Задачі, призначені мені</h2>
-        <table class="table table-hover">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Назва</th>
-                    <th scope="col">Опис</th>
-                    <th scope="col">Статус</th>
-                    <th scope="col">Дата виконання</th>
-                    <th scope="col">Поставив</th>
-                    <th scope="col">Пріоритет</th>
-                    <th scope="col">Дії</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for task in tasks_assigned_to_user %}
-                <tr>
-                    <th scope="row">{{ task.id }}</th>
-                    <td>{{ task.name }}</td>
-                    <td>{{ task.description|truncatewords:10 }}</td>
-                    <td>{{ task.get_status_display }}</td>
-                    <td>{{ task.due_date }}</td>
-                    <td>{{ task.created_by.username }}</td>
-                    <td>{{ task.get_priority_display }}</td>
-                    <td>
-                        <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Переглянути</a>
-                        <a href="{% url 'add_comment' task.id %}" class="btn btn-secondary btn-sm">Додати коментар</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="task-board">
+    <!-- Вкладки для фільтрації задач -->
+    <div class="tabs">
+        <div class="tab active" data-filter="all">Усі задачі</div>
+        <div class="tab" data-filter="created">Задачі, які я поставив</div>
+        <div class="tab" data-filter="assigned">Задачі, призначені мені</div>
     </div>
+
+    <!-- Фільтри статусів -->
+    <div class="filter-section">
+        <label>
+            <input type="checkbox" class="status-filter" value="status-new" checked> Новий
+        </label>
+        <label>
+            <input type="checkbox" class="status-filter" value="status-in-progress" checked> В процесі
+        </label>
+        <label>
+            <input type="checkbox" class="status-filter" value="status-completed" checked> Завершено
+        </label>
+    </div>
+
+    <!-- Таблиця задач -->
+    <table class="task-table">
+        <thead>
+            <tr>
+                <th>Задача</th>
+                <th>Дата завершення</th>
+                <th>Статус</th>
+                <th>Пріоритет</th>
+                <th>Виконавець</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks_created_by_user %}
+            <tr class="task-row created {% if task.status == 'Новий' %}status-new{% elif task.status == 'В процесі' %}status-in-progress{% elif task.status == 'Завершено' %}status-completed{% endif %}">
+                <td>{{ task.name }}</td>
+                <td>{{ task.due_date }}</td>
+                <td>
+                    <span class="status-badge {% if task.status == 'Новий' %}status-new{% elif task.status == 'В процесі' %}status-in-progress{% elif task.status == 'Завершено' %}status-completed{% endif %}">
+                        {{ task.get_status_display }}
+                    </span>
+                </td>
+                <td class="priority-{{ task.priority|lower }}">{{ task.get_priority_display }}</td>
+                <td>{{ task.assigned_to.username }}</td>
+                <td>
+                    <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Переглянути</a>
+                    <a href="{% url 'add_comment' task.id %}" class="btn btn-secondary btn-sm">Додати коментар</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+            {% for task in tasks_assigned_to_user %}
+            <tr class="task-row assigned {% if task.status == 'Новий' %}status-new{% elif task.status == 'В процесі' %}status-in-progress{% elif task.status == 'Завершено' %}status-completed{% endif %}">
+                <td>{{ task.name }}</td>
+                <td>{{ task.due_date }}</td>
+                <td>
+                    <span class="status-badge {% if task.status == 'Новий' %}status-new{% elif task.status == 'В процесі' %}status-in-progress{% elif task.status == 'Завершено' %}status-completed{% endif %}">
+                        {{ task.get_status_display }}
+                    </span>
+                </td>
+                <td class="priority-{{ task.priority|lower }}">{{ task.get_priority_display }}</td>
+                <td>{{ task.created_by.username }}</td>
+                <td>
+                    <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Переглянути</a>
+                    <a href="{% url 'add_comment' task.id %}" class="btn btn-secondary btn-sm">Додати коментар</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+
+<script>
+    // Фільтрація задач за вкладками
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const filter = this.getAttribute('data-filter');
+            document.querySelectorAll('.task-row').forEach(row => {
+                if (filter === 'all' || row.classList.contains(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Фільтрація задач за статусами
+    document.querySelectorAll('.status-filter').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const status = this.value;
+            document.querySelectorAll('.task-row').forEach(row => {
+                if (this.checked) {
+                    if (row.classList.contains(status)) {
+                        row.style.display = '';
+                    }
+                } else {
+                    if (row.classList.contains(status)) {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}
