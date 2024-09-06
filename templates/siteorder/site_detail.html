@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Деталі сайту{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4 text-center">Деталі сайту</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Інформація про сайт
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Назва сайту:</strong> {{ site.name }}</li>
+                        <li class="list-group-item"><strong>Посилання:</strong> <a href="{{ site.url }}" target="_blank">{{ site.url }}</a></li>
+                        <li class="list-group-item"><strong>Логін:</strong> {{ site.login }}</li>
+                        <li class="list-group-item"><strong>Електронна пошта:</strong> {{ site.email }}</li>
+                        <li class="list-group-item"><strong>Тарифний план:</strong> {{ site.tariff_plan.name }}</li>
+                        <li class="list-group-item"><strong>Дата закінчення:</strong> {{ site.expiration_date }}</li>
+                    </ul>
+                    <!-- Додаємо кнопку "Назад" -->
+                    <a href="{% url 'site_list' %}" class="btn btn-secondary mt-3">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

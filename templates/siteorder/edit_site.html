@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Редагувати сайт{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4 text-center">Редагувати сайт</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Оновіть інформацію про сайт
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }} <!-- Інпути вже містять клас 'form-control' з forms.py -->
+                        <button type="submit" class="btn btn-primary mt-3">Оновити</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

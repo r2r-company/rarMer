@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}Список сайтів{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .site-board {
+        margin: 20px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .tabs {
+        display: flex;
+        border-bottom: 2px solid #e0e0e0;
+        margin-bottom: 20px;
+    }
+    .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px 4px 0 0;
+        border: 1px solid #e0e0e0;
+        border-bottom: none;
+        background-color: #f7f7f7;
+        margin-right: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+    .tab.active {
+        background-color: #ffffff;
+        color: #007bff;
+    }
+    .site-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .site-table th, .site-table td {
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        text-align: left;
+    }
+    .site-table th {
+        background-color: #f7f7f7;
+        color: #333;
+        font-weight: bold;
+    }
+    .site-table td {
+        background-color: #ffffff;
+        transition: background-color 0.3s;
+    }
+    .site-table tr:hover td {
+        background-color: #f1f1f1;
+    }
+    .btn {
+        margin-bottom: 15px;
+    }
+    .btn-group {
+        display: flex;
+        gap: 5px;
+    }
+</style>
+
+<div class="site-board">
+    <!-- Вкладки для фільтрації -->
+    <div class="tabs">
+        <div class="tab active" data-filter="Sites">Усі сайти</div>
+        <div class="tab" data-filter="TariffPlans">Тарифні плани</div>
+        <div class="tab" data-filter="Payments">Оплати</div>
+    </div>
+
+    <!-- Таблиця сайтів -->
+    <div id="Sites" class="tabcontent">
+        <a href="{% url 'add_site' %}" class="btn btn-primary">Додати сайт</a>
+        <table class="site-table">
+            <thead>
+                <tr>
+                    <th>Назва сайту</th>
+                    <th>Посилання</th>
+                    <th>Логін</th>
+                    <th>Електронна пошта</th>
+                    <th>Тарифний план</th>
+                    <th>Дата закінчення</th>
+                    <th>Деталі</th> <!-- Додаємо колонку "Деталі" -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for site in sites %}
+                <tr>
+                    <td>{{ site.name }}</td>
+                    <td><a href="{{ site.url }}" target="_blank">{{ site.url }}</a></td>
+                    <td>{{ site.login }}</td>
+                    <td>{{ site.email }}</td>
+                    <td>{{ site.tariff_plan.name }}</td>
+                    <td>{{ site.expiration_date }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{% url 'site_detail' site.pk %}" class="btn btn-info btn-sm">Перегляд</a>
+                            <a href="{% url 'edit_site' site.pk %}" class="btn btn-secondary btn-sm">Редагувати</a>
+                            <a href="{% url 'delete_site' site.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Таблиця тарифних планів -->
+    <div id="TariffPlans" class="tabcontent" style="display:none;">
+        <a href="{% url 'add_tariff' %}" class="btn btn-primary">Додати тарифний план</a>
+        <table class="site-table">
+            <thead>
+                <tr>
+                    <th>Назва тарифу</th>
+                    <th>Ціна</th>
+                    <th>Дата закінчення</th>
+                    <th>Деталі</th> <!-- Додаємо колонку "Деталі" -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for plan in tariff_plans %}
+                <tr>
+                    <td>{{ plan.name }}</td>
+                    <td>{{ plan.price }}</td>
+                    <td>{{ plan.expiration_date }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{% url 'tariff_detail' plan.pk %}" class="btn btn-info btn-sm">Перегляд</a>
+                            <a href="{% url 'edit_tariff' plan.pk %}" class="btn btn-secondary btn-sm">Редагувати</a>
+                            <a href="{% url 'delete_tariff' plan.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Таблиця оплат -->
+    <div id="Payments" class="tabcontent" style="display:none;">
+        <a href="{% url 'add_payment' %}" class="btn btn-primary">Додати оплату</a>
+        <table class="site-table">
+            <thead>
+                <tr>
+                    <th>Сайт</th>
+                    <th>Дата оплати</th>
+                    <th>Сума</th>
+                    <th>Дата закінчення</th>
+                    <th>Деталі</th> <!-- Додаємо колонку "Деталі" -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.site.name }}</td>
+                    <td>{{ payment.payment_date }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.expiration_date }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{% url 'payment_detail' payment.pk %}" class="btn btn-info btn-sm">Перегляд</a>
+                            <a href="{% url 'edit_payment' payment.pk %}" class="btn btn-secondary btn-sm">Редагувати</a>
+                            <a href="{% url 'delete_payment' payment.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Функція для управління вкладками
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.getAttribute('data-filter');
+
+            document.querySelectorAll('.tabcontent').forEach(content => {
+                content.style.display = content.id === filter ? 'block' : 'none';
+            });
+        });
+    });
+
+    // Встановлення першої вкладки активною при завантаженні сторінки
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.tab.active').click();
+    });
+</script>
+{% endblock %}

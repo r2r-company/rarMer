@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Деталі тарифного плану{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4 text-center">Деталі тарифного плану</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Інформація про тарифний план
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Назва тарифу:</strong> {{ tariff_plan.name }}</li>
+                        <li class="list-group-item"><strong>Ціна:</strong> {{ tariff_plan.price }}</li>
+                        <li class="list-group-item"><strong>Дата закінчення:</strong> {{ tariff_plan.expiration_date }}</li>
+                    </ul>
+                    <!-- Додаємо кнопку "Назад" -->
+                    <a href="{% url 'site_list' %}" class="btn btn-secondary mt-3">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

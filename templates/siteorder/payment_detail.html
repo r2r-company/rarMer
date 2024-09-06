@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Деталі оплати{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4 text-center">Деталі оплати</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Інформація про оплату
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Сайт:</strong> {{ payment.site.name }}</li>
+                        <li class="list-group-item"><strong>Дата оплати:</strong> {{ payment.payment_date }}</li>
+                        <li class="list-group-item"><strong>Сума:</strong> {{ payment.amount }}</li>
+                        <li class="list-group-item"><strong>Дата закінчення:</strong> {{ payment.expiration_date }}</li>
+                    </ul>
+                    <!-- Додаємо кнопку "Назад" -->
+                    <a href="{% url 'site_list' %}" class="btn btn-secondary mt-3">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

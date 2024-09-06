@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Додати тарифний план{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4 text-center">Додати новий тарифний план</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Заповніть інформацію про тарифний план
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- Назва тарифу -->
+                        <div class="mb-3">
+                            <label for="id_name" class="form-label">{{ form.name.label }}</label>
+                            {{ form.name }}
+                        </div>
+                        <!-- Ціна -->
+                        <div class="mb-3">
+                            <label for="id_price" class="form-label">{{ form.price.label }}</label>
+                            {{ form.price }}
+                        </div>
+                        <!-- Дата закінчення -->
+                        <div class="mb-3">
+                            <label for="id_expiration_date" class="form-label">{{ form.expiration_date.label }}</label>
+                            {{ form.expiration_date }}
+                        </div>
+                        <!-- Кнопки -->
+                        <button type="submit" class="btn btn-primary mt-3">Зберегти</button>
+                        <a href="{% url 'site_list' %}" class="btn btn-secondary mt-3">Назад</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

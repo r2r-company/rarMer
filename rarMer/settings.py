@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'workers',
     "zvit",
     "zapravka",
+     "siteorder",
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -91,7 +92,7 @@ WSGI_APPLICATION = 'rarMer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3111',
     }
 }
 
@@ -139,6 +140,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TELEGRAM_BOT_TOKEN = '7451278791:AAG7UXvPEJeMJENhhasiaxYnv8oaS8mPCRo'
 TELEGRAM_CHAT_ID = '-4211785748'
+
+TELEGRAM_BOT_TOKEN_SECOND = '7356947589:AAFlG0lvI4iH5ffMZbSuNOLHv78sQOPi024'
 
 
 AUTHENTICATION_BACKENDS = [
